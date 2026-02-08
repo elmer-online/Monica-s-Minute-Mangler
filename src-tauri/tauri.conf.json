@@ -4,7 +4,10 @@
   "version": "1.0.0",
   "identifier": "com.monicas.minutemangler",
   "build": {
-    "frontendDist": "../src"
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
   },
   "app": {
     "withGlobalTauri": true,
@@ -12,12 +15,12 @@
     "windows": [
       {
         "title": "Monica's Minute Mangler",
-        "width": 220,
-        "height": 320,
+        "width": 300,
+        "height": 400,
         "resizable": false,
-        "decorations": false,
-        "transparent": true,
-        "alwaysOnTop": true,
+        "decorations": true,
+        "transparent": false,
+        "alwaysOnTop": false,
         "center": true
       }
     ],

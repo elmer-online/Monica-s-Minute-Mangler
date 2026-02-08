@@ -1,12 +1,22 @@
 {
-  "name": "tauri-appmonicas-minute-mangler",
-  "private": true,
-  "version": "0.1.0",
+  "name": "monicas-minute-mangler",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "tauri": "tauri"
   },
+  "dependencies": {
+    "@tauri-apps/api": "^2.10.1",
+    "@tauri-apps/plugin-opener": "^2.5.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
   "devDependencies": {
-    "@tauri-apps/cli": "^2"
+    "@tauri-apps/cli": "^2.10.0",
+    "@vitejs/plugin-react-swc": "^4.2.3",
+    "vite": "^7.3.1"
   }
 }
