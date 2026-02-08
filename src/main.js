@@ -237,6 +237,8 @@ function formatTime(seconds) {
 window.addEventListener('DOMContentLoaded', async () => {
   if (window.__TAURI__) {
     const { getCurrentWindow } = window.__TAURI__.window;
-    await getCurrentWindow().setAlwaysOnTop(true);
+    // Respect the checkbox initial state (checked by default in HTML)
+    await getCurrentWindow().setAlwaysOnTop(alwaysOnTopCheckbox.checked);
   }
 });
+
