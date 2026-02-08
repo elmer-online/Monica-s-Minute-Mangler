@@ -1,12 +1,12 @@
 # Monica's Minute Mangler
 
-A beautiful, minimalist timer app with a beating heart. Built with Python and PySide6.
+A beautiful, minimalist timer app with a beating heart. Built with Tauri for a tiny ~5MB executable!
 
 ## ⬇️ Download
 
 **[Download the latest Windows release here](https://github.com/elmer-online/Monica-s-Minute-Mangler/releases/latest)**
 
-Just download `MonicasMinuteMangler.exe` and run it – no installation required!
+Just download and run – no installation required!
 
 ## Features
 
@@ -25,15 +25,11 @@ Just download `MonicasMinuteMangler.exe` and run it – no installation required
 
 ## For Developers
 
-If you want to run from source:
-
 ```bash
 git clone https://github.com/elmer-online/Monica-s-Minute-Mangler.git
 cd Monica-s-Minute-Mangler
-python -m venv venv
-source venv/bin/activate  # or venv\Scripts\activate on Windows
-pip install PySide6
-python main.py
+npm install
+npm run tauri dev
 ```
 
 ## License
