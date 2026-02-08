@@ -13,6 +13,39 @@ const pauseBtn = document.getElementById('pauseBtn');
 const startStopBtn = document.getElementById('startStopBtn');
 const alwaysOnTopCheckbox = document.getElementById('alwaysOnTop');
 const alertOverlay = document.getElementById('alertOverlay');
+const container = document.querySelector('.container');
+
+// Window dragging
+let isDragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
+
+container.addEventListener('mousedown', async (e) => {
+  // Only drag from background, not from interactive elements
+  if (e.target.closest('button, input, .heart, .checkbox')) return;
+
+  isDragging = true;
+  dragStartX = e.clientX;
+  dragStartY = e.clientY;
+});
+
+document.addEventListener('mousemove', async (e) => {
+  if (!isDragging) return;
+
+  const deltaX = e.clientX - dragStartX;
+  const deltaY = e.clientY - dragStartY;
+
+  if (window.__TAURI__) {
+    const { getCurrentWindow } = window.__TAURI__.window;
+    const win = getCurrentWindow();
+    const pos = await win.outerPosition();
+    await win.setPosition({ type: 'Physical', x: pos.x + deltaX, y: pos.y + deltaY });
+  }
+});
+
+document.addEventListener('mouseup', () => {
+  isDragging = false;
+});
 
 // Heart click - add 5 minutes
 heart.addEventListener('click', () => {
@@ -139,7 +172,7 @@ function triggerAlert() {
 
   // Play sound
   try {
-    const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1sbZB0c3V0dXN0dHR0dHR0c3R0dHR0dHR0dHR0c3R0dHR0dHRzdHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0');
+    const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1sbZB0c3V0dXN0dHR0dHR0c3R0dHR0dHR0dHR0c3R0dHR0dHRzdHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0');
     audio.play().catch(() => { });
   } catch (e) { }
 }
