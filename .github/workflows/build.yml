@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: write
     
     steps:
     - uses: actions/checkout@v4
@@ -24,10 +26,28 @@ jobs:
     
     - name: Build executable
       run: |
-        pyinstaller --onefile --windowed --name "MonicasMinuteMangler" --icon=NONE main.py
+        pyinstaller --onefile --windowed --name "MonicasMinuteMangler" main.py
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: MonicasMinuteMangler-Windows
         path: dist/MonicasMinuteMangler.exe
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v1.0.${{ github.run_number }}
+        name: Monica's Minute Mangler v1.0.${{ github.run_number }}
+        body: |
+          ## Download
+          Download `MonicasMinuteMangler.exe` below and run it directly - no installation required!
+          
+          ## What's New
+          - Beautiful glassmorphism timer with beating heart
+          - Click heart to add 5 minutes
+          - Start/Stop/Pause controls
+          - Screen flash + sound alert when timer ends
+        files: dist/MonicasMinuteMangler.exe
+        draft: false
+        prerelease: false
