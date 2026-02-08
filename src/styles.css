@@ -36,7 +36,6 @@ body {
   gap: 12px;
   position: relative;
   overflow: hidden;
-  -webkit-app-region: drag;
 }
 
 /* Animated edge shimmer */
