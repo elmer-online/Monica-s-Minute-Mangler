@@ -20,16 +20,12 @@ body {
 .container {
   width: 200px;
   padding: 20px 16px 16px;
-  background: linear-gradient(135deg,
-      rgba(255, 252, 250, 0.96) 0%,
-      rgba(255, 248, 245, 0.94) 50%,
-      rgba(250, 245, 242, 0.92) 100%);
+  background: linear-gradient(145deg,
+      rgba(255, 240, 245, 0.98) 0%,
+      rgba(255, 230, 238, 0.96) 50%,
+      rgba(255, 220, 230, 0.94) 100%);
   border-radius: 28px;
-  border: 2px solid rgba(255, 220, 230, 0.5);
-  box-shadow:
-    0 10px 40px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(255, 200, 210, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: none;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,14 +37,12 @@ body {
   cursor: grabbing;
 }
 
-
 /* Heart */
 .heart {
   width: 70px;
   height: 65px;
   cursor: pointer;
   transition: transform 0.15s ease;
-  -webkit-app-region: no-drag;
 }
 
 .heart:hover {
@@ -105,12 +99,11 @@ body {
   text-align: center;
   font-size: 40px;
   font-weight: 600;
-  color: rgba(90, 70, 80, 0.95);
+  color: rgba(120, 60, 80, 0.95);
   background: transparent;
   border: none;
   outline: none;
   letter-spacing: 1px;
-  -webkit-app-region: no-drag;
 }
 
 .timer::selection {
@@ -122,7 +115,6 @@ body {
   display: flex;
   gap: 12px;
   width: 100%;
-  -webkit-app-region: no-drag;
 }
 
 .btn {
@@ -131,15 +123,15 @@ body {
   font-size: 13px;
   font-weight: 600;
   color: rgba(160, 70, 90, 0.9);
-  background: rgba(255, 130, 160, 0.15);
-  border: 1px solid rgba(255, 130, 160, 0.3);
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 180, 195, 0.4);
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .btn:hover:not(:disabled) {
-  background: rgba(255, 130, 160, 0.3);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .btn:active:not(:disabled) {
@@ -157,10 +149,9 @@ body {
   align-items: center;
   gap: 6px;
   font-size: 10px;
-  color: rgba(130, 110, 120, 0.7);
+  color: rgba(140, 90, 110, 0.7);
   cursor: pointer;
   margin-top: 4px;
-  -webkit-app-region: no-drag;
 }
 
 .checkbox input {
@@ -169,29 +160,25 @@ body {
   accent-color: #ff6b8a;
 }
 
-/* Alert Overlay */
-.alert-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(255, 255, 200, 0);
-  pointer-events: none;
-  z-index: 1000;
+/* Alert flash - inside app since we can't flash full screen */
+.container.alert-flash {
+  animation: alertPulse 0.15s ease-in-out 6;
 }
 
-.alert-overlay.active {
-  animation: pulse 1.5s ease-in-out;
-}
+@keyframes alertPulse {
 
-@keyframes pulse {
-  0% {
-    background: rgba(255, 255, 200, 0);
+  0%,
+  100% {
+    background: linear-gradient(145deg,
+        rgba(255, 240, 245, 0.98) 0%,
+        rgba(255, 230, 238, 0.96) 50%,
+        rgba(255, 220, 230, 0.94) 100%);
   }
 
   50% {
-    background: rgba(255, 255, 200, 0.3);
-  }
-
-  100% {
-    background: rgba(255, 255, 200, 0);
+    background: linear-gradient(145deg,
+        rgba(255, 255, 200, 0.98) 0%,
+        rgba(255, 255, 180, 0.96) 50%,
+        rgba(255, 250, 150, 0.94) 100%);
   }
 }

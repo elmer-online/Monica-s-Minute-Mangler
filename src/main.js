@@ -12,34 +12,19 @@ const timerInput = document.getElementById('timer');
 const pauseBtn = document.getElementById('pauseBtn');
 const startStopBtn = document.getElementById('startStopBtn');
 const alwaysOnTopCheckbox = document.getElementById('alwaysOnTop');
-const alertOverlay = document.getElementById('alertOverlay');
 const container = document.querySelector('.container');
 
-// Window dragging
+// Window dragging - works on both Mac and Windows
 let isDragging = false;
-let dragStartX = 0;
-let dragStartY = 0;
 
 container.addEventListener('mousedown', async (e) => {
-  // Only drag from background, not from interactive elements
   if (e.target.closest('button, input, .heart, .checkbox')) return;
-
   isDragging = true;
-  dragStartX = e.clientX;
-  dragStartY = e.clientY;
-});
 
-document.addEventListener('mousemove', async (e) => {
-  if (!isDragging) return;
-
-  const deltaX = e.clientX - dragStartX;
-  const deltaY = e.clientY - dragStartY;
-
+  // Use Tauri's built-in drag
   if (window.__TAURI__) {
     const { getCurrentWindow } = window.__TAURI__.window;
-    const win = getCurrentWindow();
-    const pos = await win.outerPosition();
-    await win.setPosition({ type: 'Physical', x: pos.x + deltaX, y: pos.y + deltaY });
+    await getCurrentWindow().startDragging();
   }
 });
 
@@ -160,21 +145,74 @@ function stopHeartbeat() {
 
 function doHeartbeat() {
   heart.classList.remove('beating', 'glowing');
-  void heart.offsetWidth; // Trigger reflow
+  void heart.offsetWidth;
   heart.classList.add('beating', 'glowing');
   setTimeout(() => heart.classList.remove('glowing'), 500);
 }
 
-// Alert
-function triggerAlert() {
-  alertOverlay.classList.add('active');
-  setTimeout(() => alertOverlay.classList.remove('active'), 1500);
+// Alert - flash the app and play sound
+async function triggerAlert() {
+  // Flash the container
+  container.classList.add('alert-flash');
+  setTimeout(() => container.classList.remove('alert-flash'), 1000);
+
+  // Request attention (flashes taskbar on Windows)
+  if (window.__TAURI__) {
+    const { getCurrentWindow } = window.__TAURI__.window;
+    await getCurrentWindow().requestUserAttention(2); // 2 = Critical
+  }
 
   // Play sound
+  playAlertSound();
+}
+
+function playAlertSound() {
   try {
-    const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1sbZB0c3V0dXN0dHR0dHR0c3R0dHR0dHR0dHR0c3R0dHR0dHRzdHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0');
-    audio.play().catch(() => { });
-  } catch (e) { }
+    // Simple beep sound
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.frequency.value = 880;
+    oscillator.type = 'sine';
+    gainNode.gain.value = 0.3;
+
+    oscillator.start();
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+    oscillator.stop(audioContext.currentTime + 0.5);
+
+    // Play 3 beeps
+    setTimeout(() => {
+      const osc2 = audioContext.createOscillator();
+      const gain2 = audioContext.createGain();
+      osc2.connect(gain2);
+      gain2.connect(audioContext.destination);
+      osc2.frequency.value = 880;
+      osc2.type = 'sine';
+      gain2.gain.value = 0.3;
+      osc2.start();
+      gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+      osc2.stop(audioContext.currentTime + 0.5);
+    }, 300);
+
+    setTimeout(() => {
+      const osc3 = audioContext.createOscillator();
+      const gain3 = audioContext.createGain();
+      osc3.connect(gain3);
+      gain3.connect(audioContext.destination);
+      osc3.frequency.value = 1100;
+      osc3.type = 'sine';
+      gain3.gain.value = 0.3;
+      osc3.start();
+      gain3.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.7);
+      osc3.stop(audioContext.currentTime + 0.7);
+    }, 600);
+  } catch (e) {
+    console.log('Audio not supported');
+  }
 }
 
 // Helpers
