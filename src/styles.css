@@ -21,50 +21,26 @@ body {
   width: 200px;
   padding: 20px 16px 16px;
   background: linear-gradient(135deg,
-      rgba(255, 252, 250, 0.95) 0%,
-      rgba(255, 248, 245, 0.92) 50%,
-      rgba(250, 245, 242, 0.90) 100%);
+      rgba(255, 252, 250, 0.96) 0%,
+      rgba(255, 248, 245, 0.94) 50%,
+      rgba(250, 245, 242, 0.92) 100%);
   border-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 2px solid rgba(255, 220, 230, 0.5);
   box-shadow:
     0 10px 40px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(255, 200, 210, 0.3),
+    0 0 0 1px rgba(255, 200, 210, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  position: relative;
-  overflow: hidden;
+  cursor: grab;
 }
 
-/* Animated edge shimmer */
-.container::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: 30px;
-  background: conic-gradient(from var(--shimmer-angle, 0deg),
-      rgba(255, 255, 255, 0.4) 0%,
-      rgba(255, 200, 215, 0.5) 25%,
-      rgba(255, 255, 255, 0.3) 50%,
-      rgba(255, 190, 205, 0.45) 75%,
-      rgba(255, 255, 255, 0.4) 100%);
-  z-index: -1;
-  animation: shimmer 8s linear infinite;
+.container:active {
+  cursor: grabbing;
 }
 
-@keyframes shimmer {
-  to {
-    --shimmer-angle: 360deg;
-  }
-}
-
-@property --shimmer-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
 
 /* Heart */
 .heart {
